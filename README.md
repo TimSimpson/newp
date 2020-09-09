@@ -7,7 +7,7 @@ Example:
 
 ```bash
 
-    newp cpp Hamburger 'creates hamburger ascii art' --directory h_to_the_b
+    newp create cpp Hamburger --description 'creates hamburger ascii art' --directory h_to_the_b
 
 ```
 
