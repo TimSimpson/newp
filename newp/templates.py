@@ -7,8 +7,7 @@ from .projects.cpp import template as cpp
 
 ProjectTemplate = t.Dict[str, str]
 Options = t.NamedTuple(
-    "Options",
-    [("type", str), ("name", str), ("directory", str), ("description", str)],
+    "Options", [("type", str), ("name", str), ("description", str)],
 )
 
 projects = {
@@ -45,3 +44,9 @@ def _evaluate(options: Options, template: ProjectTemplate) -> t.Dict[str, str]:
         result[new_file_name] = new_content
 
     return result
+
+
+def render(options: Options) -> t.Dict[str, str]:
+    template = _load(options.type)
+    files = _evaluate(options, template)
+    return files

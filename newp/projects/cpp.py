@@ -141,8 +141,8 @@ if(BUILD_TESTING AND {{scream_case_name}}_Build_Tests)
     endfunction()
 
     add_executable({{snake_case_name}}_test
-                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/{{snake_case_name}}_test.cpp)
-    target_link_libraries({{snake_case_name}}_test {{snake_case_name}})
+                   ${CMAKE_CURRENT_SOURCE_DIR}/tests/{{name}}_test.cpp)
+    target_link_libraries({{snake_case_name}}_test {{snake_case_name}}  Catch2::Catch2)
     make_test({{snake_case_name}}_test)
 
     if(BUILD_SHARED_LIBS)
@@ -177,7 +177,7 @@ file(
     WRITE "${PROJECT_BINARY_DIR}/{{kebab_case_name}}Config.cmake"
     "
 include(CMakeFindDependencyMacro)
-include(\"\${CMAKE_CURRENT_LIST_DIR}/{{kebab_case_name}}-targets.cmake\")
+include(\\"\${CMAKE_CURRENT_LIST_DIR}/{{kebab_case_name}}-targets.cmake\\")
 ")
 
 write_basic_package_version_file(
@@ -206,7 +206,7 @@ namespace {{snake_case_name}} {
 
 
 namespace {{snake_case_name}} {
-    void hello() {
+    int hello() {
         return 42;
     }
 }
@@ -216,7 +216,7 @@ namespace {{snake_case_name}} {
 #include <{{name}}.hpp>
 
 int main(int argc, char * * argv) {
-    std::cout << "hi! The answer is " << {{snake_case_name}}::hello() << ".\n";
+    std::cout << "hi! The answer is " << {{snake_case_name}}::hello() << ".\\n";
     return 0;
 }
 """,

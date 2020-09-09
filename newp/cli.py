@@ -1,20 +1,45 @@
 import argparse
-import typing as t
+import pathlib
+import sys
 
 from newp import templates
 
 
-def options_from_args() -> t.Optional[templates.Options]:
+def show_list() -> None:
+    for name, desc in templates.get_list():
+        print(name)
+        print("\t" + desc)
+        print()
+
+
+def create(options: templates.Options, directory: pathlib.Path) -> None:
+    abd = directory.absolute()
+    if not abd.parent.exists():
+        print(f"Could not find parent directory for {directory}.")
+        sys.exit(1)
+
+    files = templates.render(options)
+    for file_name, content in files.items():
+        full_path = abd / file_name
+        parent = full_path.parent
+        parent.mkdir(parents=True, exist_ok=True)
+        with open(abd / file_name, "w") as f:
+            f.write(content)
+
+
+def cli() -> None:
     parser = argparse.ArgumentParser(description="Creates a new project")
     subparsers = parser.add_subparsers(help="command")
     list_p = subparsers.add_parser("list", help="List project types")
     list_p.set_defaults(list="list")
     create_p = subparsers.add_parser("create", help="Create a new project")
-    create_p.add_argument("type", type=str, help="type of project")
+    create_p.add_argument("template", type=str, help="type of project")
     create_p.add_argument("name", type=str, help="name of new project")
-    create_p.add_argument("description", type=str, help="Description")
     create_p.add_argument(
-        "--dir",
+        "--description", type=str, help="Description", required=True
+    )
+    create_p.add_argument(
+        "--directory",
         type=str,
         help="directory (defaults to a new directory named after project)",
     )
@@ -22,25 +47,14 @@ def options_from_args() -> t.Optional[templates.Options]:
     p_args = parser.parse_args()
 
     if hasattr(p_args, "list"):
-        return None
+        show_list()
     else:
-        return templates.Options(
-            p_args.type,
-            p_args.name,
-            p_args.directory or p_args.name,
-            p_args.description,
+        create(
+            templates.Options(
+                p_args.template, p_args.name, p_args.description,
+            ),
+            pathlib.Path(p_args.directory or p_args.name),
         )
-
-
-def cli() -> None:
-    options = options_from_args()
-    if not options:
-        for name, desc in templates.get_list():
-            print(name)
-            print("\t" + desc)
-            print()
-    else:
-        print(f"{options.name} or {options.type} at {options.directory}")
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ Wow!""",
 
 
 def test_evaluate() -> None:
-    options = templates.Options("test", "TestProject", "/tmp", "Hello there!")
+    options = templates.Options("test", "TestProject", "Hello there!")
 
     expected = {
         "README.md": """
