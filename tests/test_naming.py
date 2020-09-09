@@ -63,5 +63,6 @@ def test_snake_case() -> None:
     assert "why_hello" == naming.snake_case("WhyHello")
     assert "why_hello" == naming.snake_case("Why Hello")
     assert "why_hello" == naming.snake_case("Why    Hello")
+    assert "why_hello" == naming.snake_case("Why_Hello")
     assert "why_hello" == naming.snake_case("why__hello")
     assert "why_hello_32" == naming.snake_case("why__hello32")

@@ -3,6 +3,7 @@ import typing as t
 import jinja2
 from . import naming
 from .projects.cpp import template as cpp
+from .projects.python import template as python
 
 
 ProjectTemplate = t.Dict[str, str]
@@ -10,16 +11,20 @@ Options = t.NamedTuple(
     "Options", [("type", str), ("name", str), ("description", str)],
 )
 
-projects = {
-    "cpp": cpp,
-}
+projects = {"cpp": cpp, "python": python}
 
 
 def get_list() -> t.List[t.Tuple[str, str]]:
     return [(name, value["__desc"]) for name, value in projects.items()]
 
 
+class MissingTemplate(BaseException):
+    pass
+
+
 def _load(name: str) -> ProjectTemplate:
+    if name not in projects:
+        raise MissingTemplate()
     return projects[name]
 
 

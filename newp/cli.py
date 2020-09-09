@@ -18,7 +18,11 @@ def create(options: templates.Options, directory: pathlib.Path) -> None:
         print(f"Could not find parent directory for {directory}.")
         sys.exit(1)
 
-    files = templates.render(options)
+    try:
+        files = templates.render(options)
+    except templates.MissingTemplate:
+        print(f'Error: No template found with name "{options.name}"')
+        sys.exit(1)
     for file_name, content in files.items():
         full_path = abd / file_name
         parent = full_path.parent
