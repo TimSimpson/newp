@@ -1,8 +1,10 @@
 [tool.poetry]
 name = "newp"
-version = "0.0.1"
-description = ""
+version = "0.0.4"
+description = "Spins up new projects"
 authors = ["Tim Simpson <timsimpson4@gmail.com>"]
+repository = "https://github.com/TimSimpson/newp"
+homepage = "https://github.com/TimSimpson/newp"
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -41,7 +43,8 @@ exclude = '''
 testpaths = [ 'newp', 'tests' ]
 
 [tool.poetry.scripts]
-mrst = "mrst.cli:main"
+newp = "newp.cli:main"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"

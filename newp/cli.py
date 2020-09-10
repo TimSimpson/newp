@@ -31,12 +31,13 @@ def create(options: templates.Options, directory: pathlib.Path) -> None:
             f.write(content)
 
 
-def cli() -> None:
+def main() -> None:
     parser = argparse.ArgumentParser(description="Creates a new project")
     subparsers = parser.add_subparsers(help="command")
     list_p = subparsers.add_parser("list", help="List project types")
     list_p.set_defaults(list="list")
     create_p = subparsers.add_parser("create", help="Create a new project")
+    create_p.set_defaults(create=True)
     create_p.add_argument("template", type=str, help="type of project")
     create_p.add_argument("name", type=str, help="name of new project")
     create_p.add_argument(
@@ -52,14 +53,18 @@ def cli() -> None:
 
     if hasattr(p_args, "list"):
         show_list()
-    else:
+    elif hasattr(p_args, "create"):
         create(
             templates.Options(
                 p_args.template, p_args.name, p_args.description,
             ),
             pathlib.Path(p_args.directory or p_args.name),
         )
+    else:
+        print("Missing command argument.")
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    cli()
+    main()
