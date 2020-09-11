@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "newp"
-version = "0.0.4"
+version = "0.0.5"
 description = "Spins up new projects"
 authors = ["Tim Simpson <timsimpson4@gmail.com>"]
 repository = "https://github.com/TimSimpson/newp"

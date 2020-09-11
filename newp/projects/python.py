@@ -92,6 +92,8 @@ warn_unused_ignores=True
 .mypy_cache
 .pytest_cache
 __pycache__
+dist/*
+{{ name }}.egg-info/*
 """,
     "{{snake_case_name}}/__init__.py": "",
     "{{snake_case_name}}/cli.py": """import argparse
