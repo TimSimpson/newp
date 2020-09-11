@@ -3,6 +3,7 @@ import typing as t
 import jinja2
 from . import naming
 from .projects.cpp import template as cpp
+from .projects.javascript import template as javascript
 from .projects.python import template as python
 
 
@@ -11,7 +12,7 @@ Options = t.NamedTuple(
     "Options", [("type", str), ("name", str), ("description", str)],
 )
 
-projects = {"cpp": cpp, "python": python}
+projects = {"cpp": cpp, "javascript": javascript, "python": python}
 
 
 def get_list() -> t.List[t.Tuple[str, str]]:
