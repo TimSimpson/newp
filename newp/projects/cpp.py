@@ -233,4 +233,6 @@ TEST_CASE("Hello Tests", "[hello]") {
     REQUIRE(expected == actual);
 }
 """,
+    ".gitignore": """output/*
+""",
 }
