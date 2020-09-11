@@ -12,6 +12,9 @@ template = {
 `npm tests` - Runs tests
 `npm checks` - Runs both of the above
 `npm build` - Transpiles code from `src` into standard Javascript in `lib`
+`npm format` - Runs prettier
+`npm checks` - Runs all checks
+`npm checks-ci` - Runs all checks in CI
 \n""",
     "package.json": """{
   "name": "{{camel_case_name}}",
