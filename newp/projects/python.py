@@ -64,7 +64,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.taskipy.tasks]
 black = "black {{snake_case_name}} tests"
-flake8 = "flake8  --extend-ignore=E203 {{snake_case_name}} tests"
+flake8 = "flake8  --extend-ignore=E203,E501 {{snake_case_name}} tests"
 mypy = "mypy {{snake_case_name}} tests"
 tests = "PYTHONPATH=. pytest -vv"
 checks = 'task black && task flake8 && task mypy && task tests'
