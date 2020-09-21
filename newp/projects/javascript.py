@@ -64,7 +64,7 @@ template = {
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "types": ["node", "jest"]
   },
   "exclude": ["node_modules"],
