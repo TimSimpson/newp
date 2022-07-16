@@ -228,5 +228,216 @@ TEST_CASE("Hello Tests", "[hello]") {
 }"#);
     project.insert(r#"__desc"#, r#"a typical C++ project using CMake and Conan"#);
     result.insert(r#"cpp"#, project);
+    let mut project = HashMap::new();
+    project.insert(r#".gitignore"#, r#"lib
+node_modules"#);
+    project.insert(r#".prettierignore"#, r#"lib
+node_modules"#);
+    project.insert(r#".prettierrc.json"#, r#"{}"#);
+    project.insert(r#"babel.config.json"#, r#"{
+  "presets": ["@babel/preset-env", "@babel/preset-typescript"],
+  "plugins": [
+    "@babel/proposal-class-properties",
+    "@babel/proposal-object-rest-spread",
+    [
+      "module-resolver",
+      {
+        "root": ["./src"]
+      }
+    ]
+  ]
+}"#);
+    project.insert(r#"bin\CAMEL_CASE_{{name}}.js"#, r#"#!/usr/bin/env node
+
+console.log("hi!");"#);
+    project.insert(r#"package.json"#, r#"{
+  "name": "{{camel_case_name}}",
+  "version": "0.1.0",
+  "description": "{{ description }}",
+  "bin": {
+    "{{ name }}": "./bin/{{ camel_case_name }}.js"
+  },
+  "scripts": {
+    "checks": "npm run format && npm run lint && npm run tests",
+    "checks-ci": "npm run format-ci && npm run lint && npm run tests",
+    "lint": "tsc --project tsconfig.json --outDir output/tsOutput --noEmit",
+    "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
+    "format": "prettier --write .",
+    "format-ci": "prettier --check .",
+    "tests": "jest"
+  },
+  "author": "{{ author }}",
+  "license": "{{ license }}",
+  "jest": {
+    "verbose": true,
+    "modulePaths": [
+      "src"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.13",
+    "babel-jest": "^26.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "jest": "^26.1.0",
+    "prettier": "2.1.1",
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2"
+  }
+}
+"#);
+    project.insert(r#"README.md"#, r#"# {{name}}
+
+{{description}}
+
+## Development Commands
+
+`npm ts` - Runs TypeScript checks
+`npm tests` - Runs tests
+`npm checks` - Runs both of the above
+`npm build` - Transpiles code from `src` into standard Javascript in `lib`
+`npm format` - Runs prettier
+`npm checks` - Runs all checks
+`npm checks-ci` - Runs all checks in CI"#);
+    project.insert(r#"src\CAMEL_CASE_{{name}}.ts"#, r#""export const hello = () => {
+  return 42;
+};
+"#);
+    project.insert(r#"__tests__\testPASCAL_CASE_{{name}}.ts"#, r#"import { hello } from "{{ camel_case_name }}";
+
+test("example test", () => {
+  expect(hello()).toBe(42);
+});"#);
+    project.insert(r#"tsconfig.json"#, r#"{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "es6",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "types": ["node", "jest"]
+  },
+  "exclude": ["node_modules"],
+  "baseUrl": "/",
+  "paths": {
+    "*": ["src/*", "tests/*"]
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
+}
+"#);
+    project.insert(r#"__desc"#, r#""#);
+    result.insert(r#"javascript"#, project);
+    let mut project = HashMap::new();
+    project.insert(r#".gitignore"#, r#".mypy_cache
+.pytest_cache
+__pycache__
+dist/*
+{{ name }}.egg-info/*
+"#);
+    project.insert(r#"mypy.ini"#, r#"[mypy]
+python_version=3.6
+
+check_untyped_defs=True
+disallow_any_generics=True
+disallow_untyped_calls=True
+disallow_untyped_defs=True
+follow_imports=normal
+strict_optional=True
+warn_no_return=True
+warn_redundant_casts=True
+warn_return_any=True
+warn_unused_ignores=True"#);
+    project.insert(r#"pyproject.toml"#, r#"[tool.poetry]
+name = "{{name}}"
+version = "0.0.1"
+description = ""
+authors = [{{author}}]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+typing-extensions = "^3.7.4"
+
+[tool.poetry.dev-dependencies]
+black = "^19.10b0"
+coverage = "^4.5.2"
+flake8 = "^3.7.9"
+flake8-bugbear = "^19.8.0"
+mypy = "^0.761"
+pytest = "^5.2"
+taskipy = "^1.3.0"
+
+[tool.black]
+line-length = 80
+target-version = ['py36', 'py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+[tool.pytest]
+testpaths = [ '{{snake_case_name}}', 'tests' ]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.taskipy.tasks]
+black = "black {{snake_case_name}} tests"
+flake8 = "flake8  --extend-ignore=E203,E501 {{snake_case_name}} tests"
+mypy = "mypy {{snake_case_name}} tests"
+tests = "PYTHONPATH=. pytest -vv"
+checks = 'task black && task flake8 && task mypy && task tests'
+
+[tool.poetry.scripts]
+{{snake_case_name}} = "{{snake_case_name}}.cli:main"
+
+"#);
+    project.insert(r#"README.md"#, r#"# {{name}}
+
+{{description}}
+
+This project uses [poetry](https://python-poetry.org/). Install that, then run
+the tests with:
+
+```bash
+
+  poetry install
+  poetry run task checks
+
+```"#);
+    project.insert(r#"SNAKE_CASE_{{name}}\cli.py"#, r#"import argparse
+
+
+def cli() -> None:
+    parser = argparse.ArgumentParser(description={{description_quoted}})
+    parser.add_argument("words", type=str, help="words to echo back")
+    args = parser.parse_args()
+
+    print(args.words)
+
+"#);
+    project.insert(r#"SNAKE_CASE_{{name}}\__init__.py"#, r#""#);
+    project.insert(r#"tests\test_SNAKE_CASE_{{name}}.py"#, r#"def test_example() -> None:
+    assert 4 == 2 + 2
+"#);
+    project.insert(r#"__desc"#, r#"a new-style Python project"#);
+    result.insert(r#"python"#, project);
     result
 }

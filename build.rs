@@ -36,7 +36,13 @@ pub fn load_project_templates() -> HashMap<&'static str, HashMap<&'static str, &
     }
 
     pub fn add_project_file(&mut self, file_name: String, contents: &str) {
+        // TODO: make this part less copy-pastey
         let file_name = file_name.replace("NAME", "{{name}}");
+        let file_name = file_name.replace("CAMEL_CASE_NAME", "{{camel_case_name}}");
+        let file_name = file_name.replace("KEBAB_CASE_NAME", "{{kebab_case_name}}");
+        let file_name = file_name.replace("PASCAL_CASE_NAME", "{{pascal_case_name}}");
+        let file_name = file_name.replace("SCREAM_CASE_NAME", "{{scream_case_name}}");
+        let file_name = file_name.replace("SNAKE_CASE_NAME", "{{snake_case_name}}");
         let file_name = if file_name.ends_with(".tmpl") {
             &file_name[..file_name.len() - 5]
         } else {

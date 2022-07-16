@@ -64,6 +64,10 @@ fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedConte
     ctx.insert("snake_case_name", &options.name.to_case(Case::Snake));
     ctx.insert("license", &options.license);
     ctx.insert("author", &options.author);
+    ctx.insert("description", &options.description);
+    let description_quoted: String = snailquote::escape(&options.description).to_string();
+    ctx.insert("description_quoted", &description_quoted);
+
     let mut result = HashMap::new();
     for (file_name, content) in template.into_iter() {
         if file_name == "__desc" {
