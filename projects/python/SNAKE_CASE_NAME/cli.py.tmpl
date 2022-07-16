@@ -1,0 +1,10 @@
+import argparse
+
+
+def cli() -> None:
+    parser = argparse.ArgumentParser(description={{description_quoted}})
+    parser.add_argument("words", type=str, help="words to echo back")
+    args = parser.parse_args()
+
+    print(args.words)
+

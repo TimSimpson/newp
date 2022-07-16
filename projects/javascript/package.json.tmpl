@@ -1,0 +1,40 @@
+{
+  "name": "{{camel_case_name}}",
+  "version": "0.1.0",
+  "description": "{{ description }}",
+  "bin": {
+    "{{ name }}": "./bin/{{ camel_case_name }}.js"
+  },
+  "scripts": {
+    "checks": "npm run format && npm run lint && npm run tests",
+    "checks-ci": "npm run format-ci && npm run lint && npm run tests",
+    "lint": "tsc --project tsconfig.json --outDir output/tsOutput --noEmit",
+    "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
+    "format": "prettier --write .",
+    "format-ci": "prettier --check .",
+    "tests": "jest"
+  },
+  "author": "{{ author }}",
+  "license": "{{ license }}",
+  "jest": {
+    "verbose": true,
+    "modulePaths": [
+      "src"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.13",
+    "babel-jest": "^26.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "jest": "^26.1.0",
+    "prettier": "2.1.1",
+    "ts-jest": "^26.3.0",
+    "typescript": "^4.0.2"
+  }
+}
