@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use convert_case::Case;
 use convert_case::Casing;
-use tera;
 use crate::projects;
 
 /// Summary info abotu a template
@@ -67,14 +66,14 @@ fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedConte
         if file_name == "__desc" {
             continue;
         }
-        let new_file_name = match tera::Tera::one_off(&file_name, &ctx, false) {
+        let new_file_name = match tera::Tera::one_off(file_name, &ctx, false) {
             Ok(f) => f,
             Err(e) => {
                 eprintln!("Error extracting template file name. Original file {}: {}", file_name, e);
                 std::process::exit(1);
             }
         };
-        let new_content = match tera::Tera::one_off(&content, &ctx, false) {
+        let new_content = match tera::Tera::one_off(content, &ctx, false) {
             Ok(c) => c,
             Err(e) => {
                 eprintln!("Error rendering template file {}: {}", file_name, e);

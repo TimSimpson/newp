@@ -40,7 +40,7 @@ pub fn start() {
         Command::Create(args) => {
             let directory = match args.directory {
                 Some(p) => p.into(),
-                None => (&args.name).into(),
+                None => (args.name.clone()).into(),
             };
             create(templates::RenderOptions { description: args.description, name: args.name, r#type: args.template }, directory);
         }
@@ -58,7 +58,7 @@ fn create(options: templates::RenderOptions, directory: PathBuf) {
     }
 
     let content = templates::render(&options);
-    for (file, content) in content.0.into_iter() {
+    for (file, content) in content.into_iter() {
         let mut full_path = directory.clone();
         full_path.push(file);
         if let Err(e) = std::fs::create_dir_all(full_path.parent().unwrap()) {

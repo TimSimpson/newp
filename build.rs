@@ -1,8 +1,7 @@
-use std::{path::PathBuf, ffi::OsString, ffi::OsStr, str::FromStr};
+use std::{path::PathBuf, ffi::OsString, str::FromStr};
 
 struct ProjectTemplatesWriter {
     buffer: String,
-    templates: Vec<String>,
 }
 
 impl ProjectTemplatesWriter {
@@ -16,7 +15,7 @@ use std::collections::HashMap;
 pub fn load_project_templates() -> HashMap<&'static str, HashMap<&'static str, &'static str>> {
     let mut result = HashMap::new();
 "#.to_string(),
-            templates: Vec::new() }
+            }
     }
 
     pub fn finish(mut self) -> String {
@@ -28,13 +27,13 @@ pub fn load_project_templates() -> HashMap<&'static str, HashMap<&'static str, &
         self.buffer.push_str("    let mut project = HashMap::new();\n");
     }
 
-    pub fn finish_project(&mut self, name: &String) {
+    pub fn finish_project(&mut self, name: &str) {
         self.buffer.push_str("    result.insert(r#\"");
         self.buffer.push_str(name);
         self.buffer.push_str("\"#, project);\n");
     }
 
-    pub fn add_project_file(&mut self, file_name: String, contents: &String) {
+    pub fn add_project_file(&mut self, file_name: String, contents: &str) {
         let file_name = file_name.replace("NAME", "{{name}}");
         let file_name = if file_name.ends_with(".tmpl") {
             &file_name[..file_name.len() - 5]
@@ -57,8 +56,7 @@ fn iterate_project_root_dir(writer: &mut ProjectTemplatesWriter, root: PathBuf) 
             std::process::exit(1);
         }
     };
-    for entry in entries {
-        if let Ok(entry) = entry {
+    for entry in entries.flatten() {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_dir() {                    
                     let proj_name = entry.file_name().to_string_lossy().to_string();
@@ -68,7 +66,6 @@ fn iterate_project_root_dir(writer: &mut ProjectTemplatesWriter, root: PathBuf) 
                     iterate_project(writer, dir, None);
                     writer.finish_project(&proj_name);
                 }
-            }
         }
     }
 }
@@ -81,8 +78,7 @@ fn iterate_project(writer: &mut ProjectTemplatesWriter, root: PathBuf, file_name
             std::process::exit(1);
         }
     };
-    for entry in entries {
-        if let Ok(entry) = entry {
+    for entry in entries.flatten() {
             if let Ok(file_type) = entry.file_type() {
                 if file_type.is_dir() {
                     let mut root = root.clone();
@@ -112,7 +108,6 @@ fn iterate_project(writer: &mut ProjectTemplatesWriter, root: PathBuf, file_name
                     writer.add_project_file(file_name.to_string_lossy().to_string(), &contents)
                 }
             }
-        }
     }
 }
 
@@ -120,7 +115,7 @@ fn main() {
     let mut writer = ProjectTemplatesWriter::new();
     // Tell Cargo that if the given file changes, to rerun this build script.
     println!("cargo:rerun-if-changed=projects");
-    let mut cargo_dir = match PathBuf::from_str(std::env!("CARGO_MANIFEST_DIR")) {
+    let cargo_dir = match PathBuf::from_str(std::env!("CARGO_MANIFEST_DIR")) {
         Ok(r) => r,
         Err(e) => {
             eprintln!("Cannot find CARGO_MANIFEST_DIR!: {}", e);
@@ -131,7 +126,7 @@ fn main() {
     let mut projects_dir = cargo_dir.clone();
     projects_dir.push("projects");
 
-    let mut generate_file = cargo_dir.clone();
+    let mut generate_file = cargo_dir;
     generate_file.push("src/projects.rs");
 
     iterate_project_root_dir(&mut writer, projects_dir);
