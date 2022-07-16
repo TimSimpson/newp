@@ -5,4 +5,3 @@ mod templates;
 fn main() {
     cli::start();
 }
-

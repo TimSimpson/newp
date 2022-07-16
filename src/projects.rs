@@ -1,13 +1,15 @@
-// THIS CODE IS AUTO-GENERATED. DO NOT EDIT. 
+// THIS CODE IS AUTO-GENERATED. DO NOT EDIT.
 // Or, I dunno, you can if you want. Not like I can stop you really.
-        
+
 use std::collections::HashMap;
-   
+
 pub fn load_project_templates() -> HashMap<&'static str, HashMap<&'static str, &'static str>> {
     let mut result = HashMap::new();
     let mut project = HashMap::new();
     project.insert(r#".gitignore"#, r#"output/*"#);
-    project.insert(r#"CMakeLists.txt"#, r#"# *********************************************************************
+    project.insert(
+        r#"CMakeLists.txt"#,
+        r#"# *********************************************************************
 # {{scream_case_name}}
 #       {{description}}
 # *********************************************************************
@@ -124,8 +126,11 @@ write_basic_package_version_file(
 install(FILES "${PROJECT_BINARY_DIR}/{{kebab_case_name}}Config.cmake"
               "${PROJECT_BINARY_DIR}/{{kebab_case_name}}ConfigVersion.cmake"
         DESTINATION lib/cmake/{{kebab_case_name}})
-"#);
-    project.insert(r#"conanfile.py"#, r#"import os.path
+"#,
+    );
+    project.insert(
+        r#"conanfile.py"#,
+        r#"import os.path
 
 import conans
 
@@ -185,15 +190,21 @@ class {{pascal_case_name}}(conans.ConanFile):
     def package_info(self):
         self.cpp_info.name = "{{kebab_case_name}}"
         self.cpp_info.libs = [ "{{snake_case_name}}" ]
-"#);
-    project.insert(r#"demos\{{name}}_cli.cpp"#, r#"#include <iostream>
+"#,
+    );
+    project.insert(
+        r#"demos\{{name}}_cli.cpp"#,
+        r#"#include <iostream>
 #include <{{name}}.hpp>
 
 int main(int argc, char * * argv) {
     std::cout << "hi! The answer is " << {{snake_case_name}}::hello() << ".\\n";
     return 0;
-}"#);
-    project.insert(r#"include\{{name}}.hpp"#, r#"#ifndef FILE_GUARD_{{scream_case_name}}_HPP
+}"#,
+    );
+    project.insert(
+        r#"include\{{name}}.hpp"#,
+        r#"#ifndef FILE_GUARD_{{scream_case_name}}_HPP
 #define FILE_GUARD_{{scream_case_name}}_HPP
 #pragma once
 
@@ -202,20 +213,29 @@ namespace {{snake_case_name}} {
 }
 
 #endif
-"#);
-    project.insert(r#"README.md"#, r#"# {{name}}
+"#,
+    );
+    project.insert(
+        r#"README.md"#,
+        r#"# {{name}}
 
 {{description}}
-"#);
-    project.insert(r#"src\{{name}}.cpp"#, r#"#include <{{name}}.hpp>
+"#,
+    );
+    project.insert(
+        r#"src\{{name}}.cpp"#,
+        r#"#include <{{name}}.hpp>
 
 
 namespace {{snake_case_name}} {
     int hello() {
         return 42;
     }
-}"#);
-    project.insert(r#"tests\{{name}}_test.cpp"#, r#"#include <iostream>
+}"#,
+    );
+    project.insert(
+        r#"tests\{{name}}_test.cpp"#,
+        r#"#include <iostream>
 #include <{{name}}.hpp>
 
 #define CATCH_CONFIG_MAIN
@@ -225,8 +245,12 @@ TEST_CASE("Hello Tests", "[hello]") {
     const auto expected = 42;
     const auto actual = {{snake_case_name}}::hello();
     REQUIRE(expected == actual);
-}"#);
-    project.insert(r#"__desc"#, r#"a typical C++ project using CMake and Conan"#);
+}"#,
+    );
+    project.insert(
+        r#"__desc"#,
+        r#"a typical C++ project using CMake and Conan"#,
+    );
     result.insert(r#"cpp"#, project);
     result
 }

@@ -1,33 +1,34 @@
 use std::path::PathBuf;
 
-use structopt::StructOpt;
 use crate::templates;
-
+use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name = "newp", about = "Creates a new project")]
 struct Opt {
     #[structopt(subcommand)]
-    command: Command,    
+    command: Command,
 }
 
-
-#[derive(Debug,StructOpt)]
+#[derive(Debug, StructOpt)]
 enum Command {
     Create(CreateArgs),
     List,
 }
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "command" )]
+#[structopt(name = "command")]
 struct CreateArgs {
-    #[structopt(short, long, about="type of new project")]
+    #[structopt(short, long, about = "type of new project")]
     template: String,
-    #[structopt(short, long, about="name of new project")]
+    #[structopt(short, long, about = "name of new project")]
     name: String,
-    #[structopt(long, about="description or summary of what this project does")]
+    #[structopt(long, about = "description or summary of what this project does")]
     description: String,
-    #[structopt(long, about="directory (defaults to a new directory named after this project")]
+    #[structopt(
+        long,
+        about = "directory (defaults to a new directory named after this project"
+    )]
     directory: Option<String>,
 }
 
@@ -36,13 +37,20 @@ pub fn start() {
     match opt.command {
         Command::List => {
             show_list();
-        },
+        }
         Command::Create(args) => {
             let directory = match args.directory {
                 Some(p) => p.into(),
                 None => (args.name.clone()).into(),
             };
-            create(templates::RenderOptions { description: args.description, name: args.name, r#type: args.template }, directory);
+            create(
+                templates::RenderOptions {
+                    description: args.description,
+                    name: args.name,
+                    r#type: args.template,
+                },
+                directory,
+            );
         }
     }
 }
@@ -50,9 +58,9 @@ pub fn start() {
 fn create(options: templates::RenderOptions, directory: PathBuf) {
     let parent_exists = match directory.parent() {
         None => false,
-        Some(p) => p.exists()
+        Some(p) => p.exists(),
     };
-    if  !parent_exists {
+    if !parent_exists {
         eprintln!("Could not find parent directory for {:?}.", directory);
         std::process::exit(0);
     }
@@ -69,7 +77,6 @@ fn create(options: templates::RenderOptions, directory: PathBuf) {
             eprintln!("Error writing file {:?}: {}", full_path, e);
         }
     }
-
 }
 
 fn show_list() {
