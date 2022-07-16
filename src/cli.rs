@@ -30,6 +30,10 @@ struct CreateArgs {
         about = "directory (defaults to a new directory named after this project"
     )]
     directory: Option<String>,
+    #[structopt(long, about = "license for the project")]
+    license: Option<String>,
+    #[structopt(long, about = "author for the project")]
+    author: Option<String>,
 }
 
 pub fn start() {
@@ -39,13 +43,25 @@ pub fn start() {
             show_list();
         }
         Command::Create(args) => {
-            let directory = match args.directory {
+            let directory: PathBuf = match args.directory {
                 Some(p) => p.into(),
-                None => (args.name.clone()).into(),
+                None => {
+                    let mut d: PathBuf = match std::env::current_dir() {
+                        Ok(d) => d,
+                        Err(e) => {
+                            eprintln!("cannot determine the current directory! {}", e);
+                            std::process::exit(1);
+                        }
+                    };
+                    d.push(&args.name);
+                    d
+                }
             };
             create(
                 templates::RenderOptions {
+                    author: args.author.unwrap_or_default(),
                     description: args.description,
+                    license: args.license.unwrap_or_default(),
                     name: args.name,
                     r#type: args.template,
                 },

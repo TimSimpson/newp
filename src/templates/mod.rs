@@ -43,7 +43,9 @@ fn load(name: &str) -> ProjectTemplate {
 }
 
 pub struct RenderOptions {
+    pub author: String,
     pub description: String,
+    pub license: String,
     pub name: String,
     pub r#type: String,
 }
@@ -60,7 +62,8 @@ fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedConte
         &options.name.to_case(Case::ScreamingSnake),
     );
     ctx.insert("snake_case_name", &options.name.to_case(Case::Snake));
-
+    ctx.insert("license", &options.license);
+    ctx.insert("author", &options.author);
     let mut result = HashMap::new();
     for (file_name, content) in template.into_iter() {
         if file_name == "__desc" {
@@ -79,7 +82,10 @@ fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedConte
         let new_content = match tera::Tera::one_off(content, &ctx, false) {
             Ok(c) => c,
             Err(e) => {
-                eprintln!("Error rendering template file {}: {}", file_name, e);
+                eprintln!(
+                    "Error rendering template file {}: {}\nDetails: {:?}",
+                    file_name, e, e
+                );
                 std::process::exit(1);
             }
         };
@@ -90,6 +96,6 @@ fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedConte
 
 /// Renders a template
 pub fn render(options: &RenderOptions) -> RenderedContent {
-    let template = load(&options.name);
+    let template = load(&options.r#type);
     evaluate(options, template)
 }
