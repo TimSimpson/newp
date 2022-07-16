@@ -1,13 +1,15 @@
-// THIS CODE IS AUTO-GENERATED. DO NOT EDIT. 
+// THIS CODE IS AUTO-GENERATED. DO NOT EDIT.
 // Or, I dunno, you can if you want. Not like I can stop you really.
-        
+
 use std::collections::HashMap;
-   
+
 pub fn load_project_templates() -> HashMap<&'static str, HashMap<&'static str, &'static str>> {
     let mut result = HashMap::new();
     let mut project = HashMap::new();
     project.insert(r#".gitignore"#, r#"output/*"#);
-    project.insert(r#"CMakeLists.txt"#, r#"# *********************************************************************
+    project.insert(
+        r#"CMakeLists.txt"#,
+        r#"# *********************************************************************
 # {{scream_case_name}}
 #       {{description}}
 # *********************************************************************
@@ -124,8 +126,11 @@ write_basic_package_version_file(
 install(FILES "${PROJECT_BINARY_DIR}/{{kebab_case_name}}Config.cmake"
               "${PROJECT_BINARY_DIR}/{{kebab_case_name}}ConfigVersion.cmake"
         DESTINATION lib/cmake/{{kebab_case_name}})
-"#);
-    project.insert(r#"conanfile.py"#, r#"import os.path
+"#,
+    );
+    project.insert(
+        r#"conanfile.py"#,
+        r#"import os.path
 
 import conans
 
@@ -185,15 +190,21 @@ class {{pascal_case_name}}(conans.ConanFile):
     def package_info(self):
         self.cpp_info.name = "{{kebab_case_name}}"
         self.cpp_info.libs = [ "{{snake_case_name}}" ]
-"#);
-    project.insert(r#"demos\{{name}}_cli.cpp"#, r#"#include <iostream>
+"#,
+    );
+    project.insert(
+        r#"demos\{{name}}_cli.cpp"#,
+        r#"#include <iostream>
 #include <{{name}}.hpp>
 
 int main(int argc, char * * argv) {
     std::cout << "hi! The answer is " << {{snake_case_name}}::hello() << ".\\n";
     return 0;
-}"#);
-    project.insert(r#"include\{{name}}.hpp"#, r#"#ifndef FILE_GUARD_{{scream_case_name}}_HPP
+}"#,
+    );
+    project.insert(
+        r#"include\{{name}}.hpp"#,
+        r#"#ifndef FILE_GUARD_{{scream_case_name}}_HPP
 #define FILE_GUARD_{{scream_case_name}}_HPP
 #pragma once
 
@@ -202,20 +213,29 @@ namespace {{snake_case_name}} {
 }
 
 #endif
-"#);
-    project.insert(r#"README.md"#, r#"# {{name}}
+"#,
+    );
+    project.insert(
+        r#"README.md"#,
+        r#"# {{name}}
 
 {{description}}
-"#);
-    project.insert(r#"src\{{name}}.cpp"#, r#"#include <{{name}}.hpp>
+"#,
+    );
+    project.insert(
+        r#"src\{{name}}.cpp"#,
+        r#"#include <{{name}}.hpp>
 
 
 namespace {{snake_case_name}} {
     int hello() {
         return 42;
     }
-}"#);
-    project.insert(r#"tests\{{name}}_test.cpp"#, r#"#include <iostream>
+}"#,
+    );
+    project.insert(
+        r#"tests\{{name}}_test.cpp"#,
+        r#"#include <iostream>
 #include <{{name}}.hpp>
 
 #define CATCH_CONFIG_MAIN
@@ -225,16 +245,28 @@ TEST_CASE("Hello Tests", "[hello]") {
     const auto expected = 42;
     const auto actual = {{snake_case_name}}::hello();
     REQUIRE(expected == actual);
-}"#);
-    project.insert(r#"__desc"#, r#"a typical C++ project using CMake and Conan"#);
+}"#,
+    );
+    project.insert(
+        r#"__desc"#,
+        r#"a typical C++ project using CMake and Conan"#,
+    );
     result.insert(r#"cpp"#, project);
     let mut project = HashMap::new();
-    project.insert(r#".gitignore"#, r#"lib
-node_modules"#);
-    project.insert(r#".prettierignore"#, r#"lib
-node_modules"#);
+    project.insert(
+        r#".gitignore"#,
+        r#"lib
+node_modules"#,
+    );
+    project.insert(
+        r#".prettierignore"#,
+        r#"lib
+node_modules"#,
+    );
     project.insert(r#".prettierrc.json"#, r#"{}"#);
-    project.insert(r#"babel.config.json"#, r#"{
+    project.insert(
+        r#"babel.config.json"#,
+        r#"{
   "presets": ["@babel/preset-env", "@babel/preset-typescript"],
   "plugins": [
     "@babel/proposal-class-properties",
@@ -246,11 +278,17 @@ node_modules"#);
       }
     ]
   ]
-}"#);
-    project.insert(r#"bin\CAMEL_CASE_{{name}}.js"#, r#"#!/usr/bin/env node
+}"#,
+    );
+    project.insert(
+        r#"bin\CAMEL_CASE_{{name}}.js"#,
+        r#"#!/usr/bin/env node
 
-console.log("hi!");"#);
-    project.insert(r#"package.json"#, r#"{
+console.log("hi!");"#,
+    );
+    project.insert(
+        r#"package.json"#,
+        r#"{
   "name": "{{camel_case_name}}",
   "version": "0.1.0",
   "description": "{{ description }}",
@@ -290,8 +328,11 @@ console.log("hi!");"#);
     "typescript": "^4.0.2"
   }
 }
-"#);
-    project.insert(r#"README.md"#, r#"# {{name}}
+"#,
+    );
+    project.insert(
+        r#"README.md"#,
+        r#"# {{name}}
 
 {{description}}
 
@@ -303,17 +344,26 @@ console.log("hi!");"#);
 `npm build` - Transpiles code from `src` into standard Javascript in `lib`
 `npm format` - Runs prettier
 `npm checks` - Runs all checks
-`npm checks-ci` - Runs all checks in CI"#);
-    project.insert(r#"src\CAMEL_CASE_{{name}}.ts"#, r#""export const hello = () => {
+`npm checks-ci` - Runs all checks in CI"#,
+    );
+    project.insert(
+        r#"src\CAMEL_CASE_{{name}}.ts"#,
+        r#""export const hello = () => {
   return 42;
 };
-"#);
-    project.insert(r#"__tests__\testPASCAL_CASE_{{name}}.ts"#, r#"import { hello } from "{{ camel_case_name }}";
+"#,
+    );
+    project.insert(
+        r#"__tests__\testPASCAL_CASE_{{name}}.ts"#,
+        r#"import { hello } from "{{ camel_case_name }}";
 
 test("example test", () => {
   expect(hello()).toBe(42);
-});"#);
-    project.insert(r#"tsconfig.json"#, r#"{
+});"#,
+    );
+    project.insert(
+        r#"tsconfig.json"#,
+        r#"{
   "compilerOptions": {
     "skipLibCheck": true,
     "target": "es6",
@@ -330,17 +380,23 @@ test("example test", () => {
   },
   "include": ["src/**/*.ts", "tests/**/*.ts"]
 }
-"#);
+"#,
+    );
     project.insert(r#"__desc"#, r#""#);
     result.insert(r#"javascript"#, project);
     let mut project = HashMap::new();
-    project.insert(r#".gitignore"#, r#".mypy_cache
+    project.insert(
+        r#".gitignore"#,
+        r#".mypy_cache
 .pytest_cache
 __pycache__
 dist/*
 {{ name }}.egg-info/*
-"#);
-    project.insert(r#"mypy.ini"#, r#"[mypy]
+"#,
+    );
+    project.insert(
+        r#"mypy.ini"#,
+        r#"[mypy]
 python_version=3.6
 
 check_untyped_defs=True
@@ -352,8 +408,11 @@ strict_optional=True
 warn_no_return=True
 warn_redundant_casts=True
 warn_return_any=True
-warn_unused_ignores=True"#);
-    project.insert(r#"pyproject.toml"#, r#"[tool.poetry]
+warn_unused_ignores=True"#,
+    );
+    project.insert(
+        r#"pyproject.toml"#,
+        r#"[tool.poetry]
 name = "{{name}}"
 version = "0.0.1"
 description = ""
@@ -408,8 +467,11 @@ checks = 'task black && task flake8 && task mypy && task tests'
 [tool.poetry.scripts]
 {{snake_case_name}} = "{{snake_case_name}}.cli:main"
 
-"#);
-    project.insert(r#"README.md"#, r#"# {{name}}
+"#,
+    );
+    project.insert(
+        r#"README.md"#,
+        r#"# {{name}}
 
 {{description}}
 
@@ -421,8 +483,11 @@ the tests with:
   poetry install
   poetry run task checks
 
-```"#);
-    project.insert(r#"SNAKE_CASE_{{name}}\cli.py"#, r#"import argparse
+```"#,
+    );
+    project.insert(
+        r#"SNAKE_CASE_{{name}}\cli.py"#,
+        r#"import argparse
 
 
 def cli() -> None:
@@ -432,11 +497,15 @@ def cli() -> None:
 
     print(args.words)
 
-"#);
+"#,
+    );
     project.insert(r#"SNAKE_CASE_{{name}}\__init__.py"#, r#""#);
-    project.insert(r#"tests\test_SNAKE_CASE_{{name}}.py"#, r#"def test_example() -> None:
+    project.insert(
+        r#"tests\test_SNAKE_CASE_{{name}}.py"#,
+        r#"def test_example() -> None:
     assert 4 == 2 + 2
-"#);
+"#,
+    );
     project.insert(r#"__desc"#, r#"a new-style Python project"#);
     result.insert(r#"python"#, project);
     result
