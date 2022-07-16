@@ -1,0 +1,11 @@
+#include <iostream>
+#include <{{name}}.hpp>
+
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch.hpp>
+
+TEST_CASE("Hello Tests", "[hello]") {
+    const auto expected = 42;
+    const auto actual = {{snake_case_name}}::hello();
+    REQUIRE(expected == actual);
+}
