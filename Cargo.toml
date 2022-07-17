@@ -2,6 +2,12 @@
 name = "newp"
 version = "0.1.0"
 edition = "2021"
+authors = ["Tim Simpson"]
+license = "MIT"
+description = "A CLI that quickly spin up new projects"
+repository = "https://github.com/rust-lang/cargo/"
+homepage = "https://github.com/TimSimpson/newp"
+readme = "README.md"
 
 [profile.release]
 panic = 'abort'
