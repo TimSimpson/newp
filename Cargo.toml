@@ -8,6 +8,5 @@ panic = 'abort'
 
 [dependencies]
 convert_case = "0.5.0"
-snailquote = "0.3.1"
 structopt = "0.3.26"
 tera = "1.16.0"

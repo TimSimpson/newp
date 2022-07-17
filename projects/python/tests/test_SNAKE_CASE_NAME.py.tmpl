@@ -1,2 +1,7 @@
+import {{ snake_case_name }}
+
+
 def test_example() -> None:
-    assert 4 == 2 + 2
+    expected = "Hello world!"
+    actual = {{ snake_case_name }}.hello_world()
+    assert expected == actual

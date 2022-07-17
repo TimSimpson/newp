@@ -1,0 +1,36 @@
+# use with https://github.com/casey/just
+
+_default:
+    @just --list
+
+# Sets up project (required for the other commands to work)
+setup:
+    poetry install
+
+# Runs black to format the code
+fmt:
+    poetry run task black
+
+# Runs Flake8 checks
+flake8:
+    poetry run task flake8
+
+# Runs MyPy type checker
+mypy:
+    poetry run task mypy
+
+# Formats code, then runs linters
+check:
+    poetry run task check
+
+# Runs tests
+test:
+    poetry run task test
+
+# Runs CI but locally (will reformat files for you)
+ci-local:
+    poetry run task ci-local
+
+# Runs CI
+ci:
+    poetry run task ci

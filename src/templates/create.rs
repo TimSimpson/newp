@@ -27,6 +27,15 @@ pub struct RenderOptions {
     pub r#type: String,
 }
 
+fn quote(text: &str) -> String {
+    format!(
+        "\"{}\"",
+        text.replace("\\", "\\\\")
+            .replace("\n", "\\\n")
+            .replace("\"", "\\\"")
+    )
+}
+
 fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedContent {
     let mut ctx = tera::Context::new();
     ctx.insert("name", &options.name);
@@ -42,7 +51,7 @@ fn evaluate(options: &RenderOptions, template: ProjectTemplate) -> RenderedConte
     ctx.insert("license", &options.license);
     ctx.insert("author", &options.author);
     ctx.insert("description", &options.description);
-    let description_quoted: String = snailquote::escape(&options.description).to_string();
+    let description_quoted = quote(&options.description);
     ctx.insert("description_quoted", &description_quoted);
 
     let mut result = HashMap::new();

@@ -453,9 +453,48 @@ dist/*
 "#,
     );
     project.insert(
+        r#"Justfile"#,
+        r#"# use with https://github.com/casey/just
+
+_default:
+    @just --list
+
+# Sets up project (required for the other commands to work)
+setup:
+    poetry install
+
+# Runs black to format the code
+fmt:
+    poetry run task black
+
+# Runs Flake8 checks
+flake8:
+    poetry run task flake8
+
+# Runs MyPy type checker
+mypy:
+    poetry run task mypy
+
+# Formats code, then runs linters
+check:
+    poetry run task check
+
+# Runs tests
+test:
+    poetry run task test
+
+# Runs CI but locally (will reformat files for you)
+ci-local:
+    poetry run task ci-local
+
+# Runs CI
+ci:
+    poetry run task ci"#,
+    );
+    project.insert(
         r#"mypy.ini"#,
         r#"[mypy]
-python_version=3.6
+python_version=3.9
 
 check_untyped_defs=True
 disallow_any_generics=True
@@ -466,7 +505,9 @@ strict_optional=True
 warn_no_return=True
 warn_redundant_casts=True
 warn_return_any=True
-warn_unused_ignores=True"#,
+warn_unreachable=True
+warn_unused_ignores=True
+"#,
     );
     project.insert(
         r#"pyproject.toml"#,
@@ -477,21 +518,20 @@ description = ""
 authors = [{{author}}]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-typing-extensions = "^3.7.4"
+python = "^3.9"
+typing-extensions = "^4.3.0"
 
 [tool.poetry.dev-dependencies]
-black = "^19.10b0"
-coverage = "^4.5.2"
-flake8 = "^3.7.9"
-flake8-bugbear = "^19.8.0"
-mypy = "^0.761"
-pytest = "^5.2"
-taskipy = "^1.3.0"
+black = "^22.6.0"
+coverage = "^6.4.2"
+flake8 = "^4.0.1"
+mypy = "^0.961"
+pytest = "^7.1.2"
+taskipy = "^1.10.2"
 
 [tool.black]
 line-length = 80
-target-version = ['py36', 'py37', 'py38']
+target-version = ['py39', 'py310']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -508,8 +548,9 @@ exclude = '''
 )/
 '''
 
-[tool.pytest]
-testpaths = [ '{{snake_case_name}}', 'tests' ]
+[tool.pytest.ini_options]
+pythonpath = "."
+testpaths = ['foo_py', 'tests']
 
 [build-system]
 requires = ["poetry>=0.12"]
@@ -518,9 +559,11 @@ build-backend = "poetry.masonry.api"
 [tool.taskipy.tasks]
 black = "black {{snake_case_name}} tests"
 flake8 = "flake8  --extend-ignore=E203,E501 {{snake_case_name}} tests"
+check = 'task black && task flake8 && task mypy'
 mypy = "mypy {{snake_case_name}} tests"
-tests = "PYTHONPATH=. pytest -vv"
-checks = 'task black && task flake8 && task mypy && task tests'
+test = "pytest -vv"
+ci-local = 'task black && task flake8 && task mypy && task test'
+ci = 'task black && git diff --exit-code && task flake8 && task mypy && task test'
 
 [tool.poetry.scripts]
 {{snake_case_name}} = "{{snake_case_name}}.cli:main"
@@ -554,14 +597,23 @@ def cli() -> None:
     args = parser.parse_args()
 
     print(args.words)
-
 "#,
     );
-    project.insert(r#"{{snake_case_name}}/__init__.py"#, r#""#);
+    project.insert(
+        r#"{{snake_case_name}}/__init__.py"#,
+        r#"def hello_world() -> str:
+    return "Hello world!"
+"#,
+    );
     project.insert(
         r#"tests/test_{{snake_case_name}}.py"#,
-        r#"def test_example() -> None:
-    assert 4 == 2 + 2
+        r#"import {{ snake_case_name }}
+
+
+def test_example() -> None:
+    expected = "Hello world!"
+    actual = {{ snake_case_name }}.hello_world()
+    assert expected == actual
 "#,
     );
     project.insert(r#"__desc"#, r#"a new-style Python project"#);

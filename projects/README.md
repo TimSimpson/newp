@@ -16,7 +16,7 @@ Here are the special variables passed to Tera when rendering the template files:
 * author - the author (comes from a command line argument of the same name)
 * camel_case_name - `name`, but in camelCase
 * description - describes the project (comes from a command line argument of the same name)
-* description_quoted - the description, but fully quoted by [snailquote]() so it can be dropped into languages such as JavaScript, C++, etc etc
+* description_quoted - the description, but fully quoted so it can be dropped into languages such as JavaScript, C++, etc etc
 * kebab_case_name - `name`, but in kebab-case
 * license - the license (comes from a command line argument of the same name)
 * name - the name of the project, passed in by the user
