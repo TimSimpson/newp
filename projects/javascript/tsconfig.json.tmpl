@@ -1,5 +1,7 @@
 {
+  "include": ["bin/**/*.ts", "src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
+    "baseUrl": "src",
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -13,9 +15,7 @@
     "types": ["node", "jest"]
   },
   "exclude": ["node_modules"],
-  "baseUrl": "/",
   "paths": {
     "*": ["src/*", "tests/*"]
-  },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  }
 }

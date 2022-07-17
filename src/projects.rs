@@ -349,10 +349,12 @@ ci:
   "author": "{{ author }}",
   "license": "{{ license }}",
   "jest": {
-    "verbose": true,
     "modulePaths": [
       "src"
-    ]
+    ],
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "verbose": true
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",
@@ -368,6 +370,7 @@ ci:
     "prettier": "^2.1.1",
     "ts-jest": "^26.5.6",
     "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.0.0",
     "typescript": "^4.7.4"
   }
 }
@@ -396,31 +399,44 @@ Make sure NodeJS is installed. From this directory, run `npm install`. After tha
 "#,
     );
     project.insert(
-        r#"__tests__/test{{pascal_case_name}}.ts"#,
+        r#"src/__tests__/test{{pascal_case_name}}.ts"#,
         r#"import { hello } from "{{ camel_case_name }}";
 
 test("example test", () => {
   expect(hello()).toBe(42);
-});"#,
+});
+"#,
+    );
+    project.insert(
+        r#"tsconfig.build.json"#,
+        r#"{
+  "extends": "./tsconfig",
+  "exclude": ["**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
+}
+"#,
     );
     project.insert(
         r#"tsconfig.json"#,
         r#"{
+  "include": ["bin/**/*.ts", "src/**/*.ts", "tests/**/*.ts"],
   "compilerOptions": {
-    "skipLibCheck": true,
-    "target": "es6",
+    "baseUrl": "src",
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strictNullChecks": true,
+    "target": "es6",
     "types": ["node", "jest"]
   },
   "exclude": ["node_modules"],
-  "baseUrl": "/",
   "paths": {
     "*": ["src/*", "tests/*"]
-  },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  }
 }
 "#,
     );
