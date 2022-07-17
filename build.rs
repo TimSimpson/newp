@@ -96,7 +96,16 @@ fn iterate_project(
             if file_type.is_dir() {
                 let mut root = root.clone();
                 root.push(entry.file_name());
-                iterate_project(writer, root, Some(entry.file_name()));
+                let file_name = if let Some(prefix) = &file_name_prefix {
+                    let mut oss = prefix.clone();
+                    let sep = std::path::MAIN_SEPARATOR.to_string();
+                    oss.push(&sep);
+                    oss.push(entry.file_name());
+                    oss
+                } else {
+                    entry.file_name()
+                };
+                iterate_project(writer, root, Some(file_name));
             } else {
                 let mut path = root.clone();
                 let file_name = if let Some(prefix) = &file_name_prefix {
