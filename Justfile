@@ -1,3 +1,8 @@
+# use with https://github.com/casey/just
+
+_default:
+    @just --list
+
 check:
     cargo clippy
 
