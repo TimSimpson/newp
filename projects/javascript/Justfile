@@ -13,8 +13,7 @@ check:
 
 # Runs tests
 test:
-    npm run tests
-
+    npm run test
 
 # Transpiles code from `src` into standard Javascript in `lib`
 build:
