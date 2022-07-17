@@ -193,7 +193,7 @@ class {{pascal_case_name}}(conans.ConanFile):
 "#,
     );
     project.insert(
-        r#"demos\{{name}}_cli.cpp"#,
+        r#"demos/{{name}}_cli.cpp"#,
         r#"#include <iostream>
 #include <{{name}}.hpp>
 
@@ -203,7 +203,7 @@ int main(int argc, char * * argv) {
 }"#,
     );
     project.insert(
-        r#"include\{{name}}.hpp"#,
+        r#"include/{{name}}.hpp"#,
         r#"#ifndef FILE_GUARD_{{scream_case_name}}_HPP
 #define FILE_GUARD_{{scream_case_name}}_HPP
 #pragma once
@@ -223,7 +223,7 @@ namespace {{snake_case_name}} {
 "#,
     );
     project.insert(
-        r#"src\{{name}}.cpp"#,
+        r#"src/{{name}}.cpp"#,
         r#"#include <{{name}}.hpp>
 
 
@@ -234,7 +234,7 @@ namespace {{snake_case_name}} {
 }"#,
     );
     project.insert(
-        r#"tests\{{name}}_test.cpp"#,
+        r#"tests/{{name}}_test.cpp"#,
         r#"#include <iostream>
 #include <{{name}}.hpp>
 
@@ -281,7 +281,7 @@ node_modules"#,
 }"#,
     );
     project.insert(
-        r#"bin\CAMEL_CASE_{{name}}.js"#,
+        r#"bin/{{camel_case_name}}.js"#,
         r#"#!/usr/bin/env node
 
 console.log("hi!");"#,
@@ -347,14 +347,14 @@ console.log("hi!");"#,
 `npm checks-ci` - Runs all checks in CI"#,
     );
     project.insert(
-        r#"src\CAMEL_CASE_{{name}}.ts"#,
+        r#"src/{{camel_case_name}}.ts"#,
         r#""export const hello = () => {
   return 42;
 };
 "#,
     );
     project.insert(
-        r#"__tests__\testPASCAL_CASE_{{name}}.ts"#,
+        r#"__tests__/test{{pascal_case_name}}.ts"#,
         r#"import { hello } from "{{ camel_case_name }}";
 
 test("example test", () => {
@@ -486,7 +486,7 @@ the tests with:
 ```"#,
     );
     project.insert(
-        r#"SNAKE_CASE_{{name}}\cli.py"#,
+        r#"{{snake_case_name}}/cli.py"#,
         r#"import argparse
 
 
@@ -499,9 +499,9 @@ def cli() -> None:
 
 "#,
     );
-    project.insert(r#"SNAKE_CASE_{{name}}\__init__.py"#, r#""#);
+    project.insert(r#"{{snake_case_name}}/__init__.py"#, r#""#);
     project.insert(
-        r#"tests\test_SNAKE_CASE_{{name}}.py"#,
+        r#"tests/test_{{snake_case_name}}.py"#,
         r#"def test_example() -> None:
     assert 4 == 2 + 2
 "#,

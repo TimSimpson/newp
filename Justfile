@@ -3,3 +3,7 @@ check:
 
 build:
     cargo build
+    cargo fmt
+
+fmt:
+    cargo fmt
