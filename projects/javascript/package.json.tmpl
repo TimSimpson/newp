@@ -17,11 +17,13 @@
   },
   "author": "{{ author }}",
   "license": "{{ license }}",
-  "jest": {
-    "verbose": true,
+  "jest": {    
     "modulePaths": [
       "src"
-    ]
+    ],
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "verbose": true,
   },
   "devDependencies": {
     "@babel/cli": "^7.18.6",
