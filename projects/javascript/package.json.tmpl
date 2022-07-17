@@ -6,13 +6,13 @@
     "{{ name }}": "./bin/{{ camel_case_name }}.js"
   },
   "scripts": {
-    "checks": "npm run format && npm run lint && npm run tests",
-    "checks-ci": "npm run format-ci && npm run lint && npm run tests",
-    "lint": "tsc --project tsconfig.json --outDir output/tsOutput --noEmit",
     "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
-    "format": "prettier --write .",
-    "format-ci": "prettier --check .",
-    "tests": "jest"
+    "check": "tsc --project tsconfig.json --outDir output/tsOutput --noEmit",
+    "ci": "npm run fmt-ci && npm run check && npm run test",
+    "ci-local": "npm run fmt && npm run check && npm run test",
+    "fmt": "prettier --write .",
+    "fmt-ci": "prettier --check .",
+    "test": "jest"
   },
   "author": "{{ author }}",
   "license": "{{ license }}",

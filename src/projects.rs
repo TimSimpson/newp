@@ -263,7 +263,11 @@ node_modules"#,
         r#"lib
 node_modules"#,
     );
-    project.insert(r#".prettierrc.json"#, r#"{}"#);
+    project.insert(
+        r#".prettierrc.json"#,
+        r#"{}
+"#,
+    );
     project.insert(
         r#"babel.config.json"#,
         r#"{
@@ -278,13 +282,51 @@ node_modules"#,
       }
     ]
   ]
-}"#,
+}
+"#,
     );
     project.insert(
         r#"bin/{{camel_case_name}}.js"#,
         r#"#!/usr/bin/env node
 
-console.log("hi!");"#,
+console.log("hi!");
+"#,
+    );
+    project.insert(
+        r#"Justfile"#,
+        r#"# use with https://github.com/casey/just
+
+_default:
+    @just --list
+
+# Sets up project (required for the other commands to work)
+setup:
+    npm run install
+
+# Runs TypeScript and other checks
+check:
+    npm run check
+
+# Runs tests
+test:
+    npm run tests
+
+
+# Transpiles code from `src` into standard Javascript in `lib`
+build:
+    npm run build
+
+# Runs all checks in CI
+fmt:
+    npm run fmt
+
+# Runs CI but locally (will reformat files for you)
+ci-local:
+    npm run ci-local
+
+# Runs CI
+ci:
+    npm run ci"#,
     );
     project.insert(
         r#"package.json"#,
@@ -296,13 +338,13 @@ console.log("hi!");"#,
     "{{ name }}": "./bin/{{ camel_case_name }}.js"
   },
   "scripts": {
-    "checks": "npm run format && npm run lint && npm run tests",
-    "checks-ci": "npm run format-ci && npm run lint && npm run tests",
-    "lint": "tsc --project tsconfig.json --outDir output/tsOutput --noEmit",
     "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
-    "format": "prettier --write .",
-    "format-ci": "prettier --check .",
-    "tests": "jest"
+    "check": "tsc --project tsconfig.json --outDir output/tsOutput --noEmit",
+    "ci": "npm run fmt-ci && npm run check && npm run test",
+    "ci-local": "npm run fmt && npm run check && npm run test",
+    "fmt": "prettier --write .",
+    "fmt-ci": "prettier --check .",
+    "test": "jest"
   },
   "author": "{{ author }}",
   "license": "{{ license }}",
@@ -330,25 +372,24 @@ console.log("hi!");"#,
 }
 "#,
     );
-    project.insert(
-        r#"README.md"#,
-        r#"# {{name}}
+    project.insert(r#"README.md"#, r#"# {{name}}
 
 {{description}}
 
-## Development Commands
+## Development
 
-`npm ts` - Runs TypeScript checks
-`npm tests` - Runs tests
-`npm checks` - Runs both of the above
-`npm build` - Transpiles code from `src` into standard Javascript in `lib`
-`npm format` - Runs prettier
-`npm checks` - Runs all checks
-`npm checks-ci` - Runs all checks in CI"#,
-    );
+Make sure NodeJS is installed. From this directory, run `npm install`. After that run any of the commands below:
+
+`npm run check` - Runs TypeScript checks
+`npm run test` - Runs tests
+`npm run build` - Transpiles code from `src` into standard Javascript in `lib`
+`npm run fmt` - Runs prettier
+`npm run ci-local` - Runs all checks for CI, but will format your code for you
+`npm run checks-ci` - Runs all checks for CI
+"#);
     project.insert(
         r#"src/{{camel_case_name}}.ts"#,
-        r#""export const hello = () => {
+        r#"export const hello = () => {
   return 42;
 };
 "#,

@@ -1,0 +1,33 @@
+# use with https://github.com/casey/just
+
+_default:
+    @just --list
+
+# Sets up project (required for the other commands to work)
+setup:
+    npm run install
+
+# Runs TypeScript and other checks
+check:
+    npm run check
+
+# Runs tests
+test:
+    npm run tests
+
+
+# Transpiles code from `src` into standard Javascript in `lib`
+build:
+    npm run build
+
+# Runs all checks in CI
+fmt:
+    npm run fmt
+
+# Runs CI but locally (will reformat files for you)
+ci-local:
+    npm run ci-local
+
+# Runs CI
+ci:
+    npm run ci
